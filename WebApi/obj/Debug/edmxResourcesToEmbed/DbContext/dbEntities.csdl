@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="dbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Goods">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Price" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="UserGoods" Relationship="dbModel.FK_UserGoods_ToGoods" FromRole="Goods" ToRole="UserGoods" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="City" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="Age" Type="Int32" />
+    <NavigationProperty Name="UserGoods" Relationship="Self.FK_UserGood_ToUser" FromRole="User" ToRole="UserGoods" />
+  </EntityType>
+  <EntityType Name="UserGoods">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="GoodId" Type="Int32" />
+    <NavigationProperty Name="User" Relationship="Self.FK_UserGood_ToUser" FromRole="UserGoods" ToRole="User" />
+    <NavigationProperty Name="Goods" Relationship="dbModel.FK_UserGoods_ToGoods" FromRole="UserGoods" ToRole="Goods" />
+  </EntityType>
+  <Association Name="FK_UserGood_ToUser">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="UserGoods" Type="Self.UserGoods" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserGoods">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="dbEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Goods" EntityType="Self.Goods" />
+    <EntitySet Name="User" EntityType="Self.User" />
+    <EntitySet Name="UserGoods" EntityType="Self.UserGoods" />
+    <AssociationSet Name="FK_UserGood_ToUser" Association="Self.FK_UserGood_ToUser">
+      <End Role="User" EntitySet="User" />
+      <End Role="UserGoods" EntitySet="UserGoods" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserGoods_ToGoods" Association="dbModel.FK_UserGoods_ToGoods">
+      <End Role="Goods" EntitySet="Goods" />
+      <End Role="UserGoods" EntitySet="UserGoods" />
+    </AssociationSet>
+  </EntityContainer>
+  <Association Name="FK_UserGoods_ToGoods">
+    <End Type="dbModel.Goods" Role="Goods" Multiplicity="0..1" />
+    <End Type="dbModel.UserGoods" Role="UserGoods" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Goods">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserGoods">
+        <PropertyRef Name="GoodId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

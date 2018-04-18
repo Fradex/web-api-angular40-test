@@ -1,0 +1,28 @@
+﻿<hr />
+<h3>Создание товара</h3>
+<form class="form-horizontal" novalidate  (ngSubmit)="onSubmit(goodsForm)" [formGroup]="goodsForm">
+	<div class="form-group row">
+		<label class="col-md-4 control-label" for="nameInput">Наименование</label>
+		<div class="col-md-8">
+			<input class="form-control" id="nameInput" type="text" placeholder="Наменование" formControlName="Name" />
+		</div>
+	</div>
+	<div class="form-group row">
+		<label class="col-md-4 control-label" for="descrInput">Описание</label>
+		<div class="col-md-8">
+			<textarea class="form-control" rows="4" id="descrInput" type="text" placeholder="Описание" formControlName="Description"></textarea>
+		</div>
+	</div>
+	<div class="form-group row">
+		<label class="col-md-4 control-label" for="priceInput">Цена</label>
+		<div class="col-md-8">
+			<input class="form-control" id="priceInput" type="number" placeholder="Цена" formControlName="Price" />
+		</div>
+	</div>
+	<div>
+		<div class="col-md-12 text-right">
+			<button type="submit" [disabled]="goodsForm.invalid" class="btn btn-primary">Сохранить запись</button>
+		</div>
+	</div>
+</form>
+

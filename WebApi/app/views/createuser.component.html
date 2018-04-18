@@ -1,0 +1,36 @@
+﻿<hr />
+<h3>Создание пользователя</h3>
+<form class="form-horizontal" novalidate  (ngSubmit)="onSubmit(userForm)" [formGroup]="userForm">
+	<div class="form-group">
+		<div class="form-group row">
+			<label class="col-md-4 control-label" for="nameInput">Имя</label>
+			<div class="col-md-8">
+				<input class="form-control" id="nameInput" type="text" placeholder="Имя" formControlName="Name" />
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-md-4 control-label" for="emailInput">Email</label>
+			<div class="col-md-8">
+				<textarea class="form-control" rows="4" id="emailInput" type="email" placeholder="Email" formControlName="Email"></textarea>
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-md-4 control-label" for="cityInput">Город</label>
+			<div class="col-md-8">
+				<textarea class="form-control" rows="4" id="cityInput" type="text" placeholder="Город" formControlName="City"></textarea>
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-md-4 control-label" for="ageInput">Возраст</label>
+			<div class="col-md-8">
+				<input class="form-control" id="ageInput" type="number" placeholder="Возраст" formControlName="Age" />
+			</div>
+		</div>
+	</div>
+	<div>
+		<div class="col-md-12 text-right">
+			<button type="submit" [disabled]="userForm.invalid" class="btn btn-primary">Сохранить запись</button>
+		</div>
+	</div>
+</form>
+

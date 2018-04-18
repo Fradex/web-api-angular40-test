@@ -1,0 +1,100 @@
+﻿
+<div class='panel panel-default'>
+	<div class='panel-heading'>
+		<h2>Пользователи</h2>
+	</div>
+	<div class='panel-body'>
+		<div *ngIf="msg" role="alert" class="alert alert-info alert-dismissible">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+			<span class="sr-only">Error:</span>
+			{{msg}}
+		</div>
+		<button *ngIf="!isFormShow" class="btn btn-primary" (click)="showForm()">Создать новую запись</button>
+		<createuser-comp *ngIf="isFormShow" (onRefresh)="onRefresh($event)"></createuser-comp>
+		<table class="table table-striped" [mfData]="users" #mf="mfDataTable" [mfRowsOnPage]="5">
+			<thead>
+			<tr>
+				<th style="width: 40%">
+					<mfDefaultSorter by="Name">Имя</mfDefaultSorter>
+				</th>
+				<th style="width: 20%">
+					<mfDefaultSorter by="Email">Email</mfDefaultSorter>
+				</th>
+				<th style="width: 30%">
+					<mfDefaultSorter by="City">Страна</mfDefaultSorter>
+				</th>
+				<th style="width: 10%">
+					<mfDefaultSorter by="Age">Возраст</mfDefaultSorter>
+				</th>
+				<th></th>
+				<th></th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr *ngFor="let item of mf.data">
+				<td>{{item.Name}}</td>
+				<td>{{item.Email}}</td>
+				<td>{{item.City}}</td>
+				<td class="text-right">{{item.Age}}</td>
+				<td>
+					<button title="Редактировать" class="btn btn-primary" (click)="editUser(item.Id)">Редактировать</button>
+				</td>
+				<td>
+					<button title="Удалить" class="btn btn-danger" (click)="deleteUser(item.Id)">Удалить</button>
+				</td>
+			</tr>
+			</tbody>
+			<tfoot>
+			<tr>
+				<td colspan="4">
+					<mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+				</td>
+			</tr>
+			</tfoot>
+		</table>
+	</div>
+</div>
+
+<modal #modal>
+	<form novalidate (ngSubmit)="onSubmit(userForm)" [formGroup]="userForm">
+		<modal-header [show-close]="true">
+			<h4 class="modal-title">{{modalTitle}}</h4>
+		</modal-header>
+		<modal-body>
+
+			<div class="form-group">
+				<div class="form-group row">
+					<label class="col-md-4 control-label" for="nameInput">Имя</label>
+					<div class="col-md-8">
+						<input class="form-control" id="nameInput" type="text" placeholder="Имя" formControlName="Name" />
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-md-4 control-label" for="emailInput">Email</label>
+					<div class="col-md-8">
+						<textarea class="form-control" rows="4" id="emailInput" type="email" placeholder="Email" formControlName="Email"></textarea>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-md-4 control-label" for="cityInput">Город</label>
+					<div class="col-md-8">
+						<textarea class="form-control" rows="4" id="cityInput" type="text" placeholder="Город" formControlName="City"></textarea>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-md-4 control-label" for="ageInput">Возраст</label>
+					<div class="col-md-8">
+						<input class="form-control" id="ageInput" type="number" placeholder="Возраст" formControlName="Age" />
+					</div>
+				</div>
+			</div>
+		</modal-body>
+		<modal-footer>
+			<div>
+				<a class="btn btn-default" (click)="modal.dismiss()">Отмена</a>
+				<button type="submit" [disabled]="userForm.invalid" class="btn btn-primary">{{modalBtnTitle}}</button>
+			</div>
+		</modal-footer>
+	</form>
+</modal>

@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="dbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Goods">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="255" />
+    <Property Name="Price" Type="numeric" Precision="18" Scale="2" />
+    <Property Name="Description" Type="nvarchar" MaxLength="1000" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="250" />
+    <Property Name="Email" Type="nvarchar" MaxLength="250" />
+    <Property Name="City" Type="nvarchar" MaxLength="250" />
+    <Property Name="Age" Type="int" />
+  </EntityType>
+  <EntityType Name="UserGoods">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="GoodId" Type="int" />
+  </EntityType>
+  <Association Name="FK_UserGood_ToUser">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="UserGoods" Type="Self.UserGoods" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserGoods">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserGoods_ToGoods">
+    <End Role="Goods" Type="Self.Goods" Multiplicity="0..1" />
+    <End Role="UserGoods" Type="Self.UserGoods" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Goods">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserGoods">
+        <PropertyRef Name="GoodId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="dbModelStoreContainer">
+    <EntitySet Name="Goods" EntityType="Self.Goods" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserGoods" EntityType="Self.UserGoods" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_UserGood_ToUser" Association="Self.FK_UserGood_ToUser">
+      <End Role="User" EntitySet="User" />
+      <End Role="UserGoods" EntitySet="UserGoods" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserGoods_ToGoods" Association="Self.FK_UserGoods_ToGoods">
+      <End Role="Goods" EntitySet="Goods" />
+      <End Role="UserGoods" EntitySet="UserGoods" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

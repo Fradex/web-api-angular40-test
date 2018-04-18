@@ -1,0 +1,32 @@
+﻿<hr />
+<h3>Выберите пользователя и товар</h3>
+<form class="form-horizontal" novalidate (ngSubmit)="onSubmit(userProductsForm)" [formGroup]="userProductsForm">
+	<div class="form-group">
+		<div class="form-group row">
+			<label class="col-md-4 control-label" for="userSelect">Пользователь</label>
+			<div class="col-md-8">
+				<select id="userSelect" class="form-control" formControlName="UserId">
+					<option *ngFor="let item of users" value= {{item.Id}}>
+						{{item.Name}}
+					</option>
+				</select>
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-md-4 control-label" for="productSelect">Товар</label>
+			<div class="col-md-8">
+				<select id="productSelect" class="form-control" formControlName="GoodId">
+					<option *ngFor="let item of products" value={{item.Id}}>
+						{{item.Name}}
+					</option>
+				</select>
+			</div>
+		</div>
+	</div>
+	<div>
+		<div class="col-md-12 text-right">
+			<button type="submit" [disabled]="userProductsForm.invalid" class="btn btn-primary">Сохранить запись</button>
+		</div>
+	</div>
+</form>
+

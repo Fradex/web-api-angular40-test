@@ -1,0 +1,88 @@
+﻿
+<div class='panel panel-default'>
+	<div class='panel-heading'>
+		<h2>Пользовательские товары</h2>
+	</div>
+	<div class='panel-body'>
+		<div *ngIf="msg" role="alert" class="alert alert-info alert-dismissible">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+			<span class="sr-only">Error:</span>
+			{{msg}}
+		</div>
+		<button *ngIf="!isFormShow" class="btn btn-primary" (click)="showForm()">Создать новую запись</button>
+		<createuserproducts-comp *ngIf="isFormShow" (onRefresh)="onRefresh($event)"></createuserproducts-comp>
+		<table class="table table-striped" [mfData]="userProducts" #mf="mfDataTable" [mfRowsOnPage]="5">
+			<thead>
+				<tr>
+					<th style="width: 50%">
+						<mfDefaultSorter by="UserName">Пользователь</mfDefaultSorter>
+					</th>
+					<th style="width: 50%">
+						<mfDefaultSorter by="ProductName">Товар</mfDefaultSorter>
+					</th>
+					<th></th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let item of mf.data">
+					<td>{{item.UserName}}</td>
+					<td>{{item.ProductName}}</td>
+					<td>
+						<button title="Редактировать" class="btn btn-primary" (click)="editUserProduct(item.Id)">Редактировать</button>
+					</td>
+					<td>
+						<button title="Удалить" class="btn btn-danger" (click)="deleteUserProduct(item.Id)">Удалить</button>
+					</td>
+				</tr>
+			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="4">
+						<mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+					</td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+</div>
+
+<modal #modal>
+	<form novalidate (ngSubmit)="onSubmit(userProductForm)" [formGroup]="userProductForm">
+		<modal-header [show-close]="true">
+			<h4 class="modal-title">{{modalTitle}}</h4>
+		</modal-header>
+		<modal-body>
+
+			<div class="form-group">
+				<div class="form-group row">
+					<label class="col-md-4 control-label" for="userSelect">Пользователь</label>
+					<div class="col-md-8">
+						<select id="userSelect" class="form-control" formControlName="UserId">
+							<option *ngFor="let item of users" value= {{item.Id}}>
+								{{item.Name}}
+							</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-md-4 control-label" for="productSelect">Товар</label>
+					<div class="col-md-8">
+						<select id="productSelect" class="form-control" formControlName="GoodId">
+							<option *ngFor="let item of products" value={{item.Id}}>
+								{{item.Name}}
+							</option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</modal-body>
+		<modal-footer>
+			<div>
+				<a class="btn btn-default" (click)="modal.dismiss()">Отмена</a>
+				<button type="submit" [disabled]="userProductForm.invalid" class="btn btn-primary">{{modalBtnTitle}}</button>
+			</div>
+		</modal-footer>
+	</form>
+</modal>
